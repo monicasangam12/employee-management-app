@@ -1,0 +1,12 @@
+<div>
+  <h2>Search Employees by Skill</h2>
+  <input type="text" [(ngModel)]="searchText" placeholder="Enter a skill (e.g., Angular)">
+
+  <div *ngFor="let employee of employees | appFilter:searchText">
+    <p><strong>Name:</strong> {{ employee.name }}</p>
+    <p><strong>Skill:</strong> {{ employee.skill }}</p>
+    <p><strong>Email:</strong> {{ employee.email }}</p>
+    <p><strong>Rating: </strong>{{employee.rating}}</p>
+    <hr>
+  </div>
+</div>
