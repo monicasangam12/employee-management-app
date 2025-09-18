@@ -1,40 +1,23 @@
 <html>
     <div>
         <h1>Employees Details List</h1>
-        <input type="text" [(ngModel)]="$newEmployee" placeholder="New Employee Name">
-        <button (click)="onAddButtonClick()">Add New Item</button>
     </div>
-    <table>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Username</th>
-        <th>Position</th>
-        <th>Salary</th>
-    </tr>
-    <tr *ngFor="let employee of tableData">
-        <td>{{employee.id}}</td>
-        <td>{{employee.name}}</td>
-        <td>{{employee.username}}</td>
-        <td>{{employee.position}}</td>
-        <td>{{employee.salary}}</td>
-    </tr>
-    <br>
-    <br>
-    <!-- <form (ngSubmit)="addEmployee($newEmployee)">
-        <label for="name">Name:</label>
-        <input type="text" id="name" [(ngModel)]="name" name="name" required>
-        <label for="username">Username:</label>
-        <input type="text" id="username" [(ngModel)]="username" name="username" required>
-        <label for="position">Position:</label>
-        <input type="text" id="position" [(ngModel)]="position" name="position" required>
-        <label for="salary">Salary:</label>
-        <input type="number" id="salary" [(ngModel)]="salary" name="salary" required>
-        <label for="rating">Rating:</label>
-        <input type="number" id="rating" [(ngModel)]="rating" name="rating" step="0.1" required>
-        <button (click)="addEmployee($newEmployee)" type="submit">Add Employee</button>
-    </form> -->
-    <!-- <br>
-    <br> -->
-    </table>
+<article>
+    <article class="table-header">
+        <button class="button-add-row" mat-button (click)="addRow()">Add Row</button>
+        <button class="button-edit-row" mat-button (click)="editRow($newEmployee)">Edit Row</button>
+    </article>
+   <table mat-table [dataSource]="dataSource">
+        <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns">
+        <th mat-header-cell *matHeaderCellDef>
+            {{col}}
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{element[col]}}
+        </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table> 
+</article>
 </html>
