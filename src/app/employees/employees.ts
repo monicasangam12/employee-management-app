@@ -2,57 +2,88 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Employee } from '../../employee';
 import { FormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+
+const employeesData: Employee[] = [
+    new Employee(1, 'John Doe', 'Software Engineer', 60000, 'johndoe@aol.com' , 'password123', 4.5),
+    new Employee(2, 'Jane Smith', 'Project Manager', 75000, 'janesmith@gmail.com', 'password456', 4.7),
+    new Employee(3, 'Alice Johnson', 'UX Designer', 65000, 'alicejohnson@onenote.com', 'password789', 4.3),
+    new Employee(4, 'Bob Brown', 'QA Tester', 55000, 'bobbrown@aol.com', 'password321', 4.0),
+    new Employee(5, 'Charlie Davis', 'DevOps Engineer', 70000, 'charliedavis@microsoft.com', 'password654', 4.6)
+];
+
+const COLUMNS_SCHEMA = [
+  {
+      key: "id",
+      type: "number",
+      label: "Id"
+  },
+  {
+      key: "name",
+      type: "text",
+      label: "Name"
+  },
+  {
+    key: "position",
+    type: "text",
+    label: "Position"
+},
+  {
+      key: "salary",
+      type: "number",
+      label: "Salary"
+  },
+  {
+    key: "username",
+    type: "text",
+    label: "Username"
+  },
+  { 
+    key: "password",
+    type: "password",
+    label: "Password"
+  },
+  {
+    key: "isEdit",
+    type: "isEdit",
+    label: ""
+  }
+];
 
 @Component({
   selector: 'app-employees',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatTableModule],
   templateUrl: './employees.html',
   styleUrl: './employees.css'
 })
 export class EmployeesComponent {
     employees: Employee[] = [];
-    name: any;
-    username: any;
-    position: any;
-    salary: any;
-    rating: any;
     $newEmployee!: Employee;
-    tableData: any[] = [];
-    newEmployeeName: string = '';
-    nextId: number = 4;
+    columnsSchema: any = COLUMNS_SCHEMA;
+    displayedColumns: string[] = COLUMNS_SCHEMA.map((col: { key: any; }) => col.key);
+    dataSource = employeesData;
 
-    constructor(){
-       this.tableData = [
-            { id: 1, name: 'Alice Johnson', username: '', position: 'Software Engineer', salary: 90000, rating: 4.5 },
-            { id: 2, name: 'Bob Smith', username: '', position: 'Product Manager', salary: 105000, rating: 4.2 },
-            { id: 3, name: 'Charlie Brown', username: '', position: 'UX Designer', salary: 85000, rating: 4.7 }
-        ];
+    ngOnInit() {
+        this.employees = this.dataSource;
+        console.log("Employees Data:", this.employees);
+    }
+    constructor(){}
+
+    addRow(){
+        const newId = this.employees.length + 1;
+        const newEmployee = new Employee(newId, 'New Employee', 'New Position', 50000, '', '', 0);
+        this.dataSource = [...this.dataSource, newEmployee];
+        this.employees = this.dataSource;
+        console.log("Row Added:", newEmployee);
     }
 
-    onAddButtonClick(){
-        if(this.newEmployeeName.trim() !== ''){
-            const newEntry =   {id: this.nextId++, name: this.newEmployeeName, username: 'bsangam@yahoo.com', position: 'Java Tech Lead', salary: 175000, rating: 8.9 };
-            this.newEmployeeName = 'Bhupendra Sangam';
-            this.tableData.push(newEntry);
-            console.log("New Employee Added:", this.newEmployeeName);
-        }
+    editRow(employee: Employee){
+        employee.isEdit = true;
+        console.log("Editing Employee:", employee);
     }
 
     onSubmit(){
-        this.$newEmployee = new Employee(this.employees.length + 1, this.name, this.position, this.salary, this.username, 'defaultPassword', this.rating);
         this.employees.push(this.$newEmployee);
-        // this.name = 'Bhupendra Sangam';
-        // this.username = 'bsangam@yahoo.com';
-        // this.position = 'TypeScript Developer';
-        // this.salary = '780000';
-        // this.rating = '4.5';
-        this.addEmployee(this.$newEmployee)
         console.log("New Employee Added:", this.$newEmployee);
-    }
-
-    addEmployee(newEmployee: Employee){
-        const employee = new Employee(0, '', '', 0, '', '', 0);
-        console.log(newEmployee);
-        console.log("Add Employee Clicked");
     }
 }
